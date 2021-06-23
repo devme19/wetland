@@ -97,6 +97,8 @@ class DownLoadController extends GetxController{
   }
 
   Future<void> _showNotification(Map<String, dynamic> downloadStatus) async {
+    final isSuccess = downloadStatus['isSuccess'];
+    Get.snackbar('Wetland'.tr, isSuccess ? 'Downloaded'.tr : 'Download failed'.tr);
     final android = AndroidNotificationDetails(
         'channel id',
         'channel name',
@@ -107,7 +109,7 @@ class DownLoadController extends GetxController{
     final iOS = IOSNotificationDetails();
     final platform = NotificationDetails(android:android,iOS:iOS);
     final json = jsonEncode(downloadStatus);
-    final isSuccess = downloadStatus['isSuccess'];
+
     await LocalNotification.flutterLocalNotificationsPlugin.show(
         0, // notification id
         'Wetlands'.tr,

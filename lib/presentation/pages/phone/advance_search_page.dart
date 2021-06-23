@@ -152,9 +152,10 @@ class AdvanceSearchPage extends GetView<ContentPageController> {
                       children: [
 
                         Container(
+                          margin: EdgeInsets.only(left: 9,right: 9),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(5)),
-                              color: Colors.white.withOpacity(0.5)),
+                              color: toggleColor.withOpacity(0.8)),
                           child: IconButton(
                             icon: Icon(Icons.arrow_back,color: Colors.black,),
                             onPressed: ()=> Navigator.pop(Get.context),

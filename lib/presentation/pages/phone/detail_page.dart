@@ -8,11 +8,19 @@ import 'package:video_player/video_player.dart';
 import 'package:wetland/core/config/config.dart';
 import 'package:wetland/data/model/content_model.dart';
 import 'package:wetland/presentation/controller/download_controller.dart';
+import 'package:wetland/presentation/controller/main_page_controller.dart';
 
 class DetailPage extends StatefulWidget {
   Content content;
+  String category='';
+  MainPageController mainPageController = Get.put(MainPageController());
   DetailPage(){
     content = Get.arguments;
+    for(int i=0;i<content.category.length;i++){
+      category+=mainPageController.isUs.value?content.category[i].titleEn:content.category[i].title;
+      if(i+1 < content.category.length)
+        category+='/';
+    }
     }
     // controller.getContentDetail(parameters);
   @override
@@ -91,7 +99,7 @@ class _DetailPageState extends State<DetailPage> {
                   Expanded(child:
                   InkWell(
                     onTap: () =>
-                        controller.download(widget.content.title + '.${widget.content.attacheType}',
+                        controller.download(widget.content.title + '.${widget.content.attachType}',
                             widget.content.attache, downloadProgress),
                     child: Container(
                       color: Colors.white,
@@ -146,23 +154,18 @@ class _DetailPageState extends State<DetailPage> {
                     flex: 2,
                     child: Column(
                       children: [
+                        infoWidget('Category'.tr, widget.category),
+                        SizedBox(height: 16,),
+                        infoWidget('Type'.tr, widget.content.type.title),
+                        SizedBox(height: 16,),
                         infoWidget('Producer'.tr, widget.content.author),
                         SizedBox(height: 16,),
                         infoWidget('Production date'.tr, widget.content.createdAt),
+                        // SizedBox(height: 16.0,),
+
                       ],
                     ),
                   ),
-                  Expanded(flex: 1, child: Container()),
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: [
-                        infoWidget('Category'.tr, ''),
-                        SizedBox(height: 16.0,),
-                        infoWidget('Type'.tr, widget.content.type.title),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
@@ -185,11 +188,11 @@ class _DetailPageState extends State<DetailPage> {
       child: Row(
         children: [
           Expanded(
-            flex: 2,
+            flex: 1,
               child: Text(
             title, style: TextStyle(fontWeight: FontWeight.bold),)),
           SizedBox(width: 8,),
-          Expanded(child: Text(value)),
+          Expanded(flex:3,child: Text(value)),
         ],
       ),
     );

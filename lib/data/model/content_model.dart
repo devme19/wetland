@@ -1,23 +1,15 @@
-
 import 'package:wetland/domain/entity/content_entity.dart';
 
 class ContentModel extends ContentEntity{
 
 
-  ContentModel(
-      {
-        bool success,
-        int code,
-        String locale,
-        String message,
-        Data data,
-}):super(
-    code: code,
-    locale: locale,
-    message: message,
-    success: success,
-    data: data
-  );
+  ContentModel({
+    bool success,
+    int code,
+    String locale,
+    String message,
+    Data data,
+});
 
   ContentModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
@@ -83,32 +75,36 @@ class Content {
   String year;
   String author;
   String attache;
-  String attacheType;
+  String attachType;
   String photo;
   String video;
   int languageId;
   int typeId;
   Type type;
-  List<Tree> tree;
-  int categoryId;
+  Subtype subtype;
+  // List<Null> tree;
+  List<Category> category;
+  List<Gallery> gallery;
   String createdAt;
 
   Content(
       {this.id,
         this.title,
         this.content,
-        this.attacheType,
         this.alias,
         this.year,
         this.author,
         this.attache,
+        this.attachType,
         this.photo,
         this.video,
         this.languageId,
         this.typeId,
         this.type,
-        this.tree,
-        this.categoryId,
+        this.subtype,
+        // this.tree,
+        this.category,
+        this.gallery,
         this.createdAt});
 
   Content.fromJson(Map<String, dynamic> json) {
@@ -119,19 +115,32 @@ class Content {
     year = json['year'];
     author = json['author'];
     attache = json['attache'];
-    attacheType = json['attache_type'];
+    attachType = json['attach_type'];
     photo = json['photo'];
     video = json['video'];
     languageId = json['language_id'];
     typeId = json['type_id'];
     type = json['type'] != null ? new Type.fromJson(json['type']) : null;
-    if (json['tree'] != null) {
-      tree = [];
-      json['tree'].forEach((v) {
-        tree.add(new Tree.fromJson(v));
+    subtype =
+    json['subtype'] != null ? new Subtype.fromJson(json['subtype']) : null;
+    // if (json['tree'] != null) {
+    //   tree = new List<Null>();
+    //   json['tree'].forEach((v) {
+    //     tree.add(new Null.fromJson(v));
+    //   });
+    // }
+    if (json['category'] != null) {
+      category = [];
+      json['category'].forEach((v) {
+        category.add(new Category.fromJson(v));
       });
     }
-    categoryId = json['category_id'];
+    if (json['gallery'] != null) {
+      gallery = [];
+      json['gallery'].forEach((v) {
+        gallery.add(new Gallery.fromJson(v));
+      });
+    }
     createdAt = json['created_at'];
   }
 
@@ -144,6 +153,7 @@ class Content {
     data['year'] = this.year;
     data['author'] = this.author;
     data['attache'] = this.attache;
+    data['attach_type'] = this.attachType;
     data['photo'] = this.photo;
     data['video'] = this.video;
     data['language_id'] = this.languageId;
@@ -151,10 +161,18 @@ class Content {
     if (this.type != null) {
       data['type'] = this.type.toJson();
     }
-    if (this.tree != null) {
-      data['tree'] = this.tree.map((v) => v.toJson()).toList();
+    if (this.subtype != null) {
+      data['subtype'] = this.subtype.toJson();
     }
-    data['category_id'] = this.categoryId;
+    // if (this.tree != null) {
+    //   data['tree'] = this.tree.map((v) => v.toJson()).toList();
+    // }
+    if (this.category != null) {
+      data['category'] = this.category.map((v) => v.toJson()).toList();
+    }
+    if (this.gallery != null) {
+      data['gallery'] = this.gallery.map((v) => v.toJson()).toList();
+    }
     data['created_at'] = this.createdAt;
     return data;
   }
@@ -164,8 +182,8 @@ class Type {
   int id;
   String title;
   String titleEn;
-  Null parentId;
   String alias;
+  Null parentId;
   String createdAt;
   String updatedAt;
 
@@ -173,8 +191,8 @@ class Type {
       {this.id,
         this.title,
         this.titleEn,
-        this.parentId,
         this.alias,
+        this.parentId,
         this.createdAt,
         this.updatedAt});
 
@@ -182,8 +200,8 @@ class Type {
     id = json['id'];
     title = json['title'];
     titleEn = json['title_en'];
-    parentId = json['parent_id'];
     alias = json['alias'];
+    parentId = json['parent_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -193,45 +211,95 @@ class Type {
     data['id'] = this.id;
     data['title'] = this.title;
     data['title_en'] = this.titleEn;
-    data['parent_id'] = this.parentId;
     data['alias'] = this.alias;
+    data['parent_id'] = this.parentId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
   }
 }
 
-class Tree {
+class Subtype {
   int id;
   String title;
   String titleEn;
   String alias;
-  String icon;
+  int parentId;
   String createdAt;
   String updatedAt;
-  int languageId;
-  Pivot pivot;
 
-  Tree(
+  Subtype(
       {this.id,
         this.title,
         this.titleEn,
         this.alias,
-        this.icon,
+        this.parentId,
         this.createdAt,
-        this.updatedAt,
-        this.languageId,
-        this.pivot});
+        this.updatedAt});
 
-  Tree.fromJson(Map<String, dynamic> json) {
+  Subtype.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     titleEn = json['title_en'];
     alias = json['alias'];
-    icon = json['icon'];
+    parentId = json['parent_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    languageId = json['language_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['title_en'] = this.titleEn;
+    data['alias'] = this.alias;
+    data['parent_id'] = this.parentId;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class Category {
+  int id;
+  String title;
+  String titleEn;
+  String alias;
+  String description;
+  String descriptionEn;
+  String icon;
+  String image;
+  String createdAt;
+  String updatedAt;
+  int active;
+  Pivot pivot;
+
+  Category(
+      {this.id,
+        this.title,
+        this.titleEn,
+        this.alias,
+        this.description,
+        this.descriptionEn,
+        this.icon,
+        this.image,
+        this.createdAt,
+        this.updatedAt,
+        this.active,
+        this.pivot});
+
+  Category.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    titleEn = json['title_en'];
+    alias = json['alias'];
+    description = json['description'];
+    descriptionEn = json['description_en'];
+    icon = json['icon'];
+    image = json['image'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    active = json['active'];
     pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
   }
 
@@ -241,10 +309,13 @@ class Tree {
     data['title'] = this.title;
     data['title_en'] = this.titleEn;
     data['alias'] = this.alias;
+    data['description'] = this.description;
+    data['description_en'] = this.descriptionEn;
     data['icon'] = this.icon;
+    data['image'] = this.image;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['language_id'] = this.languageId;
+    data['active'] = this.active;
     if (this.pivot != null) {
       data['pivot'] = this.pivot.toJson();
     }
@@ -254,101 +325,47 @@ class Tree {
 
 class Pivot {
   int contentId;
-  int treeId;
+  int categoryId;
 
-  Pivot({this.contentId, this.treeId});
+  Pivot({this.contentId, this.categoryId});
 
   Pivot.fromJson(Map<String, dynamic> json) {
     contentId = json['content_id'];
-    treeId = json['tree_id'];
+    categoryId = json['category_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['content_id'] = this.contentId;
-    data['tree_id'] = this.treeId;
+    data['category_id'] = this.categoryId;
     return data;
   }
 }
 
-// class Category {
-//   int id;
-//   String title;
-//   String titleEn;
-//   String alias;
-//   String description;
-//   String descriptionEn;
-//   String icon;
-//   String image;
-//   String createdAt;
-//   String updatedAt;
-//   int active;
-//   Pivot pivot;
-//
-//   Category(
-//       {this.id,
-//         this.title,
-//         this.titleEn,
-//         this.alias,
-//         this.description,
-//         this.descriptionEn,
-//         this.icon,
-//         this.image,
-//         this.createdAt,
-//         this.updatedAt,
-//         this.active,
-//         this.pivot});
-//
-//   Category.fromJson(Map<String, dynamic> json) {
-//     id = json['id'];
-//     title = json['title'];
-//     titleEn = json['title_en'];
-//     alias = json['alias'];
-//     description = json['description'];
-//     descriptionEn = json['description_en'];
-//     icon = json['icon'];
-//     image = json['image'];
-//     createdAt = json['created_at'];
-//     updatedAt = json['updated_at'];
-//     active = json['active'];
-//     pivot = json['pivot'] != null ? new Pivot.fromJson(json['pivot']) : null;
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['id'] = this.id;
-//     data['title'] = this.title;
-//     data['title_en'] = this.titleEn;
-//     data['alias'] = this.alias;
-//     data['description'] = this.description;
-//     data['description_en'] = this.descriptionEn;
-//     data['icon'] = this.icon;
-//     data['image'] = this.image;
-//     data['created_at'] = this.createdAt;
-//     data['updated_at'] = this.updatedAt;
-//     data['active'] = this.active;
-//     if (this.pivot != null) {
-//       data['pivot'] = this.pivot.toJson();
-//     }
-//     return data;
-//   }
-// }
-//
-// class Pivot1 {
-//   int contentId;
-//   int categoryId;
-//
-//   Pivot({this.contentId, this.categoryId});
-//
-//   Pivot.fromJson(Map<String, dynamic> json) {
-//     contentId = json['content_id'];
-//     categoryId = json['category_id'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['content_id'] = this.contentId;
-//     data['category_id'] = this.categoryId;
-//     return data;
-//   }
-// }
+class Gallery {
+  int id;
+  String file;
+  int contentId;
+  String createdAt;
+  String updatedAt;
+
+  Gallery({this.id, this.file, this.contentId, this.createdAt, this.updatedAt});
+
+  Gallery.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    file = json['file'];
+    contentId = json['content_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['file'] = this.file;
+    data['content_id'] = this.contentId;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}

@@ -114,7 +114,7 @@ class _ItemState extends State<Item> {
             SizedBox(height: 8,),
             Divider(),
             InkWell(
-              onTap: ()=>controller.download(widget.content.title+'.${widget.content.attacheType}',widget.content.attache,onProgress),
+              onTap: ()=>controller.download(widget.content.title+'.${widget.content.attachType}',widget.content.attache,onProgress),
               child: Container(
                 // color: Colors.red,
                 height: 40,

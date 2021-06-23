@@ -23,7 +23,7 @@ class Messages extends Translations{
       'Category':'Category',
       'Type':'Type',
       'Wetlands':'Wetlands',
-      'Downloaded':'Downloaded',
+      'Downloaded':'Download Complete',
       'Download failed':'Download failed',
       'Home':'Home',
       'Advance Search':'Advance Search',
@@ -36,7 +36,8 @@ class Messages extends Translations{
       'Confirm':'Confirm',
       'Cancel':'Cancel',
       'Knowledge tree':'Knowledge tree',
-      'Clear Filters':'Clear Filters'
+      'Clear Filters':'Clear Filters',
+      'Wetland':'Wetland'
       },
     'fa_IR': {
       'communications': 'ارتباطات',
@@ -71,7 +72,8 @@ class Messages extends Translations{
       'Confirm':'تایید',
       'Cancel':'لغو',
       'Knowledge tree':'درخت دانش',
-      'Clear Filters':'حذف فیلتر ها'
+      'Clear Filters':'حذف فیلتر ها',
+      'Wetland':'تالاب'
     }
   };
 }
